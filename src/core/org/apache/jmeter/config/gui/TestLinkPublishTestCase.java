@@ -1,10 +1,7 @@
 package org.apache.jmeter.config.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -14,14 +11,9 @@ import javax.swing.JTextField;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.jmeter.assertions.AssertionResult;
-import org.apache.jmeter.protocol.http.sampler.SoapSampler;
-import org.apache.jmeter.reporters.AbstractListenerElement;
-import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.samplers.SampleResult;
-import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterVariables;
-import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jmeter.visualizers.gui.AbstractVisualizer;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
@@ -53,25 +45,23 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 				log.info("This one failed:" + ToStringBuilder.reflectionToString(ar));
 			}
 		}
-		
+
 		JMeterVariables variables = JMeterContextService.getContext().getVariables();
-		String urlData = variables.get(TestLinkArgumentsPanel.TEST_LINK_URL)+variables.get(TestLinkArgumentsPanel.TEST_API_URL);
-		log.info("urlData= "+ urlData);
-		log.info("TEST_API_URL= "+ variables.get(TestLinkArgumentsPanel.TEST_API_URL));
-		log.info("TEST_API_KEY_URL= "+ variables.get(TestLinkArgumentsPanel.TEST_API_KEY_URL));
+		String urlData = variables.get(TestLinkArgumentsPanel.TEST_LINK_URL) + variables.get(TestLinkArgumentsPanel.TEST_API_URL);
+		log.info("urlData= " + urlData);
+		log.info("TEST_API_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_URL));
+		log.info("TEST_API_KEY_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_KEY_URL));
 		
-		
-		 SoapSampler sampler = new  SoapSampler();
-		 
-         sampler.setURLData(urlData);
-//         sampler.setXmlData(soapXml.getText());
-//         sampler.setXmlFile(soapXmlFile.getFilename());
-//         sampler.setSOAPAction(soapAction.getText());
-//         sampler.setSendSOAPAction(sendSoapAction.isSelected());
-         boolean keepAlive=true;;
-		sampler.setUseKeepAlive(keepAlive);
-//		sampler.
-		log.info("testId="+jTextField.getText());
+		// XmlRpcClient xmlRpcClient=new XmlRpcClient();
+
+		// sampler.setXmlData(soapXml.getText());
+		// sampler.setXmlFile(soapXmlFile.getFilename());
+		// sampler.setSOAPAction(soapAction.getText());
+		// sampler.setSendSOAPAction(sendSoapAction.isSelected());
+		boolean keepAlive = true;
+		// sampler.setUseKeepAlive(keepAlive);
+		// sampler.
+		log.info("testId=" + jTextField.getText());
 	}
 
 	private void init() {
@@ -101,7 +91,6 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 
 	@Override
 	public void clearData() {
-	
 
 	}
 
