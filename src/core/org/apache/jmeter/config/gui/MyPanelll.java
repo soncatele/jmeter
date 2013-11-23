@@ -1,22 +1,5 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
 package org.apache.jmeter.config.gui;
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -59,7 +42,7 @@ import org.apache.log.Logger;
  * for some other component.
  *
  */
-public class ArgumentsPanel extends AbstractConfigGui implements ActionListener {
+public class MyPanelll extends AbstractConfigGui implements ActionListener {
 	private static final Logger log = LoggingManager.getLoggerForClass();
     private static final long serialVersionUID = 240L;
 
@@ -124,7 +107,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
     /**
      * Create a new ArgumentsPanel as a standalone component.
      */
-    public ArgumentsPanel() {
+    public MyPanelll() {
         this(JMeterUtils.getResString("user_defined_variables"),null, true, true);// $NON-NLS-1$
     }
 
@@ -135,7 +118,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
      * @param label
      *            the title for the component.
      */
-    public ArgumentsPanel(String label) {
+    public MyPanelll(String label) {
         this(label, null, true, false);
     }
     
@@ -147,7 +130,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
      *            the title for the component.
      * @param enableUpDown Add up/down buttons
      */
-    public ArgumentsPanel(String label, boolean enableUpDown) {
+    public MyPanelll(String label, boolean enableUpDown) {
         this(label, null, enableUpDown, false);
     }
 
@@ -156,7 +139,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
      * @param label text for label
      * @param bkg background colour
      */
-    public ArgumentsPanel(String label, Color bkg) {
+    public MyPanelll(String label, Color bkg) {
         this(label, bkg, true, false);
     }
     
@@ -167,7 +150,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
      * @param enableUpDown Add up/down buttons
      * @param standalone is standalone
      */
-    public ArgumentsPanel(String label, Color bkg, boolean enableUpDown, boolean standalone) {
+    public MyPanelll(String label, Color bkg, boolean enableUpDown, boolean standalone) {
         this(label, bkg, enableUpDown, standalone, null);
     }
        
@@ -179,7 +162,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
      * @param standalone is standalone
      * @param model the table model to use
      */
-    public ArgumentsPanel(String label, Color bkg, boolean enableUpDown, boolean standalone, ObjectTableModel model) {
+    public MyPanelll(String label, Color bkg, boolean enableUpDown, boolean standalone, ObjectTableModel model) {
         tableLabel = new JLabel(label);
         this.enableUpDown = enableUpDown;
         this.background = bkg;
@@ -205,7 +188,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
 
     @Override
     public String getLabelResource() {
-        return "user_defined_variables"; // $NON-NLS-1$
+        return "test_link_defined_variables"; // $NON-NLS-1$
     }
 
     /* Implements JMeterGUIComponent.createTestElement() */
@@ -571,7 +554,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
 
     public static boolean testFunctors(){
     	log.info("testFunctors");
-        MyPanelll instance = new MyPanelll();
+        ArgumentsPanel instance = new ArgumentsPanel();
         instance.initializeTableModel();
         return instance.tableModel.checkFunctors(null,instance.getClass());
     }
@@ -696,3 +679,4 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
         sizeColumns(table);
     }
 }
+

@@ -40,13 +40,15 @@ import org.apache.jmeter.testelement.property.StringProperty;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.Data;
 import org.apache.jorphan.gui.GuiUtils;
+import org.apache.jorphan.logging.LoggingManager;
+import org.apache.log.Logger;
 
 /**
  * Default config gui for Configuration Element.
  */
 public class SimpleConfigGui extends AbstractConfigGui implements ActionListener {
     /* This class created for enhancement Bug ID 9101. */
-
+	private static final Logger log = LoggingManager.getLoggerForClass();
     private static final long serialVersionUID = 240L;
 
     // TODO: This class looks a lot like ArgumentsPanel. What exactly is the
@@ -129,11 +131,13 @@ public class SimpleConfigGui extends AbstractConfigGui implements ActionListener
             tableModel.addRow(new Object[] { prop.getName(), prop.getStringValue() });
         }
         checkDeleteStatus();
+        log.info("configure");
     }
 
     /* Implements JMeterGUIComponent.createTestElement() */
     @Override
     public TestElement createTestElement() {
+    	log.info("createTestElement");
         TestElement el = new ConfigTestElement();
         modifyTestElement(el);
         return el;
@@ -152,8 +156,10 @@ public class SimpleConfigGui extends AbstractConfigGui implements ActionListener
         Data model = tableModel.getData();
         model.reset();
         while (model.next()) {
-            el.setProperty(new StringProperty((String) model.getColumnValue(COLUMN_NAMES_0), (String) model
+            String columnValue = (String) model.getColumnValue(COLUMN_NAMES_0);
+			el.setProperty(new StringProperty(columnValue, (String) model
                     .getColumnValue(COLUMN_NAMES_1)));
+            log.info("setted property:"+columnValue);
         }
         super.configureTestElement(el);
     }
@@ -190,6 +196,7 @@ public class SimpleConfigGui extends AbstractConfigGui implements ActionListener
         } else if (action.equals(ADD)) {
             addArgument();
         }
+        log.info("Action performed:"+action);
     }
 
     /**

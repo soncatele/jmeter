@@ -34,7 +34,7 @@ import javax.swing.JPasswordField;
 
 import org.apache.jmeter.config.ConfigTestElement;
 import org.apache.jmeter.config.gui.AbstractConfigGui;
-import org.apache.jmeter.config.gui.ArgumentsPanel;
+import org.apache.jmeter.config.gui.MyPanelll;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.protocol.ldap.sampler.LDAPExtSampler;
 import org.apache.jmeter.protocol.ldap.config.gui.LDAPArgumentsPanel;
@@ -163,7 +163,7 @@ public class LdapExtConfigGui extends AbstractConfigGui implements ItemListener 
 
     private boolean displayName = true;
 
-    private ArgumentsPanel tableAddPanel = new ArgumentsPanel(JMeterUtils.getResString("addtest")); // $NON-NLS-1$
+    private MyPanelll tableAddPanel = new MyPanelll(JMeterUtils.getResString("addtest")); // $NON-NLS-1$
 
     private LDAPArgumentsPanel tableModifyPanel = new LDAPArgumentsPanel(JMeterUtils.getResString("modtest")); // $NON-NLS-1$
 

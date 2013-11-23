@@ -29,7 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.ArgumentsPanel;
+import org.apache.jmeter.config.gui.MyPanelll;
 import org.apache.jmeter.gui.util.FilePanel;
 import org.apache.jmeter.gui.util.JLabeledRadioI18N;
 import org.apache.jmeter.gui.util.JSyntaxTextArea;
@@ -118,7 +118,7 @@ public class JMSPublisherGui extends AbstractSamplerGui implements ChangeListene
     private final JLabeledRadioI18N destSetup =
         new JLabeledRadioI18N("jms_dest_setup", DEST_SETUP_ITEMS, DEST_SETUP_STATIC); // $NON-NLS-1$
 
-    private ArgumentsPanel jmsPropertiesPanel;
+    private MyPanelll jmsPropertiesPanel;
 
     public JMSPublisherGui() {
         init();
@@ -201,7 +201,7 @@ public class JMSPublisherGui extends AbstractSamplerGui implements ChangeListene
         mainPanel.add(createAuthPane());
         mainPanel.add(iterations);
 
-        jmsPropertiesPanel = new ArgumentsPanel(JMeterUtils.getResString("jms_props")); //$NON-NLS-1$
+        jmsPropertiesPanel = new MyPanelll(JMeterUtils.getResString("jms_props")); //$NON-NLS-1$
         mainPanel.add(jmsPropertiesPanel);
 
         configChoice.setLayout(new BoxLayout(configChoice, BoxLayout.X_AXIS));
