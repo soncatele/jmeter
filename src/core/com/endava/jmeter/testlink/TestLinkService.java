@@ -1,4 +1,4 @@
-package org.apache.jmeter.config.gui;
+package com.endava.jmeter.testlink;
 
 import java.io.IOException;
 import java.util.HashMap;

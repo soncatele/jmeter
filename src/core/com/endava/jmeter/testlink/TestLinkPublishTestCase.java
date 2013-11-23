@@ -1,4 +1,4 @@
-package org.apache.jmeter.config.gui;
+package com.endava.jmeter.testlink;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
