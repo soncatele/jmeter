@@ -23,7 +23,7 @@ import java.util.Iterator;
 import javax.swing.JTable;
 
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.protocol.http.util.HTTPArgument;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.testelement.property.PropertyIterator;
@@ -37,7 +37,7 @@ import org.apache.jorphan.reflect.Functor;
  * These have names and values, as well as check-boxes to determine whether or not to
  * include the "=" sign in the output and whether or not to encode the output.
  */
-public class HTTPArgumentsPanel extends MyPanelll {
+public class HTTPArgumentsPanel extends ArgumentsPanel {
 
     private static final long serialVersionUID = 240L;
 
@@ -48,7 +48,7 @@ public class HTTPArgumentsPanel extends MyPanelll {
     @Override
     protected void initializeTableModel() {
         tableModel = new ObjectTableModel(new String[] {
-                MyPanelll.COLUMN_RESOURCE_NAMES_0, MyPanelll.COLUMN_RESOURCE_NAMES_1, ENCODE_OR_NOT, INCLUDE_EQUALS },
+                ArgumentsPanel.COLUMN_RESOURCE_NAMES_0, ArgumentsPanel.COLUMN_RESOURCE_NAMES_1, ENCODE_OR_NOT, INCLUDE_EQUALS },
                 HTTPArgument.class,
                 new Functor[] {
                 new Functor("getName"), //$NON-NLS-1$

@@ -41,7 +41,7 @@ import javax.swing.event.ChangeListener;
 
 import org.apache.jmeter.config.Argument;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.engine.util.CompoundVariable;
 import org.apache.jmeter.functions.Function;
 import org.apache.jmeter.gui.action.ActionRouter;
@@ -60,7 +60,7 @@ public class FunctionHelper extends JDialog implements ActionListener, ChangeLis
 
     private JLabeledChoice functionList;
 
-    private MyPanelll parameterPanel;
+    private ArgumentsPanel parameterPanel;
 
     private JLabeledTextField cutPasteFunction;
 
@@ -95,7 +95,7 @@ public class FunctionHelper extends JDialog implements ActionListener, ChangeLis
     }
     
     private void init() {
-        parameterPanel = new MyPanelll(JMeterUtils.getResString("function_params"), false); //$NON-NLS-1$
+        parameterPanel = new ArgumentsPanel(JMeterUtils.getResString("function_params"), false); //$NON-NLS-1$
         initializeFunctionList();
         this.getContentPane().setLayout(new BorderLayout(10, 10));
         JPanel comboPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

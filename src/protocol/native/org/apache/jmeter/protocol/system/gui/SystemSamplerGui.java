@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.config.Argument;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.util.FilePanelEntry;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.protocol.system.SystemSampler;
@@ -63,8 +63,8 @@ public class SystemSamplerGui extends AbstractSamplerGui implements ItemListener
     private JLabeledTextField directory;
     private JLabeledTextField command;
     private JLabeledTextField timeout;
-    private MyPanelll argsPanel;
-    private MyPanelll envPanel;
+    private ArgumentsPanel argsPanel;
+    private ArgumentsPanel envPanel;
     
     /**
      * Constructor for JavaTestSamplerGui
@@ -219,8 +219,8 @@ public class SystemSamplerGui extends AbstractSamplerGui implements ItemListener
      * @return JPanel Arguments Panel
      */
     private JPanel makeArgumentsPanel() {
-        argsPanel = new MyPanelll(JMeterUtils.getResString("arguments_panel_title"), null, true, false ,  // $NON-NLS-1$
-                new ObjectTableModel(new String[] { MyPanelll.COLUMN_RESOURCE_NAMES_1 },
+        argsPanel = new ArgumentsPanel(JMeterUtils.getResString("arguments_panel_title"), null, true, false ,  // $NON-NLS-1$
+                new ObjectTableModel(new String[] { ArgumentsPanel.COLUMN_RESOURCE_NAMES_1 },
                         Argument.class,
                         new Functor[] {
                         new Functor("getValue") },  // $NON-NLS-1$
@@ -234,7 +234,7 @@ public class SystemSamplerGui extends AbstractSamplerGui implements ItemListener
      * @return JPanel Environment Panel
      */
     private JPanel makeEnvironmentPanel() {
-        envPanel = new MyPanelll(JMeterUtils.getResString("environment_panel_title")); // $NON-NLS-1$
+        envPanel = new ArgumentsPanel(JMeterUtils.getResString("environment_panel_title")); // $NON-NLS-1$
         return envPanel;
     }
 

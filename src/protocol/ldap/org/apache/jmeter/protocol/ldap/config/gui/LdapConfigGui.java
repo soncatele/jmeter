@@ -33,7 +33,7 @@ import javax.swing.JTextField;
 
 import org.apache.jmeter.config.ConfigTestElement;
 import org.apache.jmeter.config.gui.AbstractConfigGui;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.protocol.ldap.sampler.LDAPSampler;
 import org.apache.jmeter.testelement.TestElement;
@@ -83,9 +83,9 @@ public class LdapConfigGui extends AbstractConfigGui implements ItemListener {
 
     private boolean displayName = true;
 
-    private MyPanelll tableAddPanel = new MyPanelll(JMeterUtils.getResString("add_test")); // $NON-NLS-1$
+    private ArgumentsPanel tableAddPanel = new ArgumentsPanel(JMeterUtils.getResString("add_test")); // $NON-NLS-1$
 
-    private MyPanelll tableModifyPanel = new MyPanelll(JMeterUtils.getResString("modify_test")); // $NON-NLS-1$
+    private ArgumentsPanel tableModifyPanel = new ArgumentsPanel(JMeterUtils.getResString("modify_test")); // $NON-NLS-1$
 
     private JPanel cards;
 

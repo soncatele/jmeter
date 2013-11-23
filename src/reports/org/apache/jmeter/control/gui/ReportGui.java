@@ -30,7 +30,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.util.DirectoryPanel;
 import org.apache.jmeter.gui.util.ReportMenuFactory;
 import org.apache.jmeter.report.gui.AbstractReportGui;
@@ -58,7 +58,7 @@ public class ReportGui extends AbstractReportGui {
                 Color.white);
 
     /** A panel allowing the user to define variables. */
-    private MyPanelll argsPanel;
+    private ArgumentsPanel argsPanel;
 
     /**
      * Create a new TestPlanGui.
@@ -153,7 +153,7 @@ public class ReportGui extends AbstractReportGui {
      */
     private JPanel createVariablePanel() {
         argsPanel =
-            new MyPanelll(JMeterUtils.getResString("user_defined_variables"), // $NON-NLS-1$
+            new ArgumentsPanel(JMeterUtils.getResString("user_defined_variables"), // $NON-NLS-1$
                     Color.white);
         return argsPanel;
     }

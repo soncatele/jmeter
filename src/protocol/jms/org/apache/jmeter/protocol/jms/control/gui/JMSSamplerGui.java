@@ -29,7 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.util.HorizontalPanel;
 import org.apache.jmeter.gui.util.JSyntaxTextArea;
 import org.apache.jmeter.gui.util.JTextScrollPane;
@@ -72,9 +72,9 @@ public class JMSSamplerGui extends AbstractSamplerGui {
 
     private JLabeledChoice oneWay = new JLabeledChoice(JMeterUtils.getResString("jms_communication_style"), labels); //$NON-NLS-1$
 
-    private MyPanelll jmsPropertiesPanel;
+    private ArgumentsPanel jmsPropertiesPanel;
 
-    private MyPanelll jndiPropertiesPanel;
+    private ArgumentsPanel jndiPropertiesPanel;
 
     private JCheckBox useNonPersistentDelivery;
 
@@ -250,7 +250,7 @@ public class JMSSamplerGui extends AbstractSamplerGui {
         messageContent.setPreferredSize(pref);
         messagePanel.add(messageContentPanel, BorderLayout.CENTER);
 
-        jmsPropertiesPanel = new MyPanelll(JMeterUtils.getResString("jms_props")); //$NON-NLS-1$
+        jmsPropertiesPanel = new ArgumentsPanel(JMeterUtils.getResString("jms_props")); //$NON-NLS-1$
         messagePanel.add(jmsPropertiesPanel, BorderLayout.SOUTH);
 
         Box mainPanel = Box.createVerticalBox();
@@ -280,7 +280,7 @@ public class JMSSamplerGui extends AbstractSamplerGui {
         providerPanel.add(providerUrl);
         jndiPanel.add(providerPanel, BorderLayout.SOUTH);
 
-        jndiPropertiesPanel = new MyPanelll(JMeterUtils.getResString("jms_jndi_props")); //$NON-NLS-1$
+        jndiPropertiesPanel = new ArgumentsPanel(JMeterUtils.getResString("jms_jndi_props")); //$NON-NLS-1$
         jndiPanel.add(jndiPropertiesPanel);
         return jndiPanel;
     }

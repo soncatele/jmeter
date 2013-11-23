@@ -27,7 +27,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.AbstractJMeterGuiComponent;
 import org.apache.jmeter.gui.action.ActionNames;
 import org.apache.jmeter.gui.util.FileListPanel;
@@ -58,7 +58,7 @@ public class TestPlanGui extends AbstractJMeterGuiComponent {
     private final JCheckBox tearDownOnShutdown;
 
     /** A panel allowing the user to define variables. */
-    private final MyPanelll argsPanel;
+    private final ArgumentsPanel argsPanel;
 
     private final FileListPanel browseJar;
 
@@ -67,7 +67,7 @@ public class TestPlanGui extends AbstractJMeterGuiComponent {
      */
     public TestPlanGui() {
         browseJar = new FileListPanel(JMeterUtils.getResString("test_plan_classpath_browse"), ".jar"); // $NON-NLS-1$ $NON-NLS-2$
-        argsPanel = new MyPanelll(JMeterUtils.getResString("user_defined_variables")); // $NON-NLS-1$
+        argsPanel = new ArgumentsPanel(JMeterUtils.getResString("user_defined_variables")); // $NON-NLS-1$
         serializedMode = new JCheckBox(JMeterUtils.getResString("testplan.serialized")); // $NON-NLS-1$
         functionalMode = new JCheckBox(JMeterUtils.getResString("functional_mode")); // $NON-NLS-1$
         tearDownOnShutdown = new JCheckBox(JMeterUtils.getResString("teardown_on_shutdown")); // $NON-NLS-1$

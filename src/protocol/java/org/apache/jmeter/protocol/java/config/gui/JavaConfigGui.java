@@ -35,7 +35,7 @@ import javax.swing.JPanel;
 import org.apache.jmeter.config.Argument;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.AbstractConfigGui;
-import org.apache.jmeter.config.gui.MyPanelll;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.util.HorizontalPanel;
 import org.apache.jmeter.protocol.java.config.JavaConfig;
 import org.apache.jmeter.protocol.java.sampler.JavaSampler;
@@ -69,7 +69,7 @@ public class JavaConfigGui extends AbstractConfigGui implements ActionListener {
     private boolean displayName = true;
 
     /** A panel allowing the user to set arguments for this test. */
-    private MyPanelll argsPanel;
+    private ArgumentsPanel argsPanel;
 
     /**
      * Create a new JavaConfigGui as a standalone component.
@@ -217,7 +217,7 @@ public class JavaConfigGui extends AbstractConfigGui implements ActionListener {
      * @return a panel containing the relevant components
      */
     private JPanel createParameterPanel() {
-        argsPanel = new MyPanelll(JMeterUtils.getResString("paramtable")); // $NON-NLS-1$
+        argsPanel = new ArgumentsPanel(JMeterUtils.getResString("paramtable")); // $NON-NLS-1$
         return argsPanel;
     }
 

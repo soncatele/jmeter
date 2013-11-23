@@ -571,7 +571,7 @@ public class ArgumentsPanel extends AbstractConfigGui implements ActionListener 
 
     public static boolean testFunctors(){
     	log.info("testFunctors");
-        MyPanelll instance = new MyPanelll();
+    	ArgumentsPanel instance = new ArgumentsPanel();
         instance.initializeTableModel();
         return instance.tableModel.checkFunctors(null,instance.getClass());
     }
