@@ -1,4 +1,4 @@
-package com.endava.jmeter.testlink;
+package org.apache.jmeter.config.gui;
 
 import org.apache.jmeter.config.Argument;
 import org.apache.jmeter.config.Arguments;

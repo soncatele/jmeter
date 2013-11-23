@@ -1,4 +1,4 @@
-package com.endava.jmeter.testlink;
+package org.apache.jmeter.config.gui;
 
 
 import java.awt.BorderLayout;
@@ -26,9 +26,6 @@ import javax.swing.table.TableCellEditor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.config.Argument;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.config.gui.AbstractConfigGui;
-import org.apache.jmeter.config.gui.ArgumentsPanel;
-import org.apache.jmeter.config.gui.RowDetailDialog;
 import org.apache.jmeter.gui.util.HeaderAsPropertyRenderer;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.testelement.property.PropertyIterator;
