@@ -1,6 +1,7 @@
 package org.apache.jmeter.config.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.Box;
@@ -21,6 +22,10 @@ import org.apache.log.Logger;
 public class TestLinkPublishTestCase extends AbstractVisualizer {
 	private static final Logger log = LoggingManager.getLoggerForClass();
 	public static String TEST_ID = "TEST_ID";
+	JTextField jTextField = null;
+	JTextField notes = null;
+	
+	JTextField platform = null;
 
 	public TestLinkPublishTestCase() {
 		init();
@@ -35,33 +40,50 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 		log.info("add(SampleResult sample)::::" + ToStringBuilder.reflectionToString(sample));
 
 		AssertionResult[] assertionResults = sample.getAssertionResults();
+		JMeterVariables variables = JMeterContextService.getContext().getVariables();
+		String urlData = variables.get(TestLinkArgumentsPanel.TEST_LINK_URL) + variables.get(TestLinkArgumentsPanel.TEST_API_URL);
+
+		TestLinkService tlS = new TestLinkService(urlData, variables.get(TestLinkArgumentsPanel.TEST_API_KEY));
+
+		String status = null;
 		for (AssertionResult ar : assertionResults) {
 			if (ar.isError() || ar.isFailure()) {
 				log.info("this test has to be published in test link:" + ar.getFailureMessage());
 				log.info("****************************");
 				log.info(ToStringBuilder.reflectionToString(ar));
 				log.info("****************************");
+
+				status = "f";
 			} else {
-				log.info("This one failed:" + ToStringBuilder.reflectionToString(ar));
+
+				status = "p";
+				log.info("This one is success:" + ToStringBuilder.reflectionToString(ar));
 			}
 		}
+		if (status != null) {
+			String projectName = variables.get(TestLinkTestProject.PROJECT_NAME);
+			String testPlanName = variables.get(TestLinkTestProject.PLAN_NAME);
 
-		JMeterVariables variables = JMeterContextService.getContext().getVariables();
-		String urlData = variables.get(TestLinkArgumentsPanel.TEST_LINK_URL) + variables.get(TestLinkArgumentsPanel.TEST_API_URL);
-		log.info("urlData= " + urlData);
-		log.info("TEST_API_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_URL));
-		log.info("TEST_API_KEY_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_KEY_URL));
-		
-		// XmlRpcClient xmlRpcClient=new XmlRpcClient();
+			String testPlanId = tlS.getTestPlanByName(projectName, testPlanName);
+			String buildid = tlS.getLastBuildForTestPlanId(testPlanId);
+			String testcaseexternalid = jTextField.getText();
 
-		// sampler.setXmlData(soapXml.getText());
-		// sampler.setXmlFile(soapXmlFile.getFilename());
-		// sampler.setSOAPAction(soapAction.getText());
-		// sampler.setSendSOAPAction(sendSoapAction.isSelected());
-		boolean keepAlive = true;
-		// sampler.setUseKeepAlive(keepAlive);
-		// sampler.
-		log.info("testId=" + jTextField.getText());
+			log.info("urlData= " + urlData);
+			log.info("TEST_API_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_URL));
+			log.info("TEST_API_KEY= " + variables.get(TestLinkArgumentsPanel.TEST_API_KEY));
+			log.info("PROJECT_NAME= " + projectName);
+			log.info("PLAN_NAME= " + testPlanName);
+			log.info("testPlanId= " + testPlanId);
+			log.info("buildid= " + buildid);
+			log.info("testcaseexternalid= " + testcaseexternalid);
+			log.info("status= " + status);
+
+			String reportTCResult = tlS.reportTCResult(testPlanId, testcaseexternalid, notes.getText(), status,
+					platform.getText());
+			log.info("reportTCResult=" + reportTCResult);
+			log.info("************************************************");
+		}
+
 	}
 
 	private void init() {
@@ -70,22 +92,28 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 		setBorder(makeBorder());
 
 		box.add(makeTitlePanel());
-		box.add(createPanel());
+		box.add(createPanel(),BorderLayout.WEST);
 		// box.add(createFieldPanel());
 		// box.add(createTypePanel());
 		add(box, BorderLayout.NORTH);
 		// add(createStringPanel(), BorderLayout.CENTER);
 	}
 
-	JTextField jTextField = null;
-
 	private JPanel createPanel() {
-		JPanel panel = new JPanel(new GridLayout(3, 2));
+		JPanel panel = new JPanel(new GridLayout(0, 2));
 		panel.add(new JLabel("Test Id:"));
 		jTextField = new JTextField("test_id");
 		panel.add(jTextField);
-		JButton jButton = new JButton("Set Test Id");
-		panel.add(jButton);
+
+		panel.add(new JLabel("Notes:"));
+		notes = new JTextField("notes");
+		panel.add(notes);
+
+		// platform
+		panel.add(new JLabel("Platform:"));
+		platform = new JTextField("platform");
+		panel.add(platform);
+
 		return panel;
 	}
 

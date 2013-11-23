@@ -109,7 +109,7 @@ public class TestLinkArgumentsPanel extends AbstractConfigGui implements ActionL
 	
 	public static final String TEST_LINK_URL = "TEST_LINK_URL";
 	public static final String TEST_API_URL = "TEST_API_URL";
-	public static final String TEST_API_KEY_URL = "TEST_API_KEY";
+	public static final String TEST_API_KEY = "TEST_API_KEY";
     /**
      * Create a new ArgumentsPanel as a standalone component.
      */
@@ -203,7 +203,7 @@ public class TestLinkArgumentsPanel extends AbstractConfigGui implements ActionL
     	log.info("createTestElement");
     	tableModel.addRow(new Argument(TEST_LINK_URL,"http://localhost"));
     	tableModel.addRow(new Argument(TEST_API_URL,"/testlink/lib/api/xmlrpc/v1/xmlrpc.php"));
-    	tableModel.addRow(new Argument(TEST_API_KEY_URL,""));
+    	tableModel.addRow(new Argument(TEST_API_KEY,""));
     	 
         Arguments args = new Arguments();
         modifyTestElement(args);
