@@ -1,15 +1,14 @@
 package org.apache.jmeter.config.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.jmeter.assertions.AssertionResult;
 import org.apache.jmeter.samplers.SampleResult;
@@ -24,8 +23,10 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 	public static String TEST_ID = "TEST_ID";
 	JTextField jTextField = null;
 	JTextField notes = null;
-	
+	JTextField errors = null;
+
 	JTextField platform = null;
+	JPanel mainPanel = null;
 
 	public TestLinkPublishTestCase() {
 		init();
@@ -64,26 +65,52 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 			String projectName = variables.get(TestLinkTestProject.PROJECT_NAME);
 			String testPlanName = variables.get(TestLinkTestProject.PLAN_NAME);
 
-			String testPlanId = tlS.getTestPlanByName(projectName, testPlanName);
-			String buildid = tlS.getLastBuildForTestPlanId(testPlanId);
-			String testcaseexternalid = jTextField.getText();
+			String testPlanId_testProjectId = tlS.getTestPlanByName(projectName, testPlanName);
+			String testPlanId = "";
+			String testProjectId = "";
+			if (StringUtils.isNotBlank(testPlanId_testProjectId)) {
+				String[] arr = testPlanId_testProjectId.split(TestLinkService.ARRAY_SEPARATOR);
+				if (arr != null && arr.length == 2) {
+					testPlanId = arr[0];
+					testProjectId = arr[1];
+				}else{
+					addError("testPlanId_testProjectId not OK:"+testPlanId_testProjectId );
+				}
+			}
+			if (StringUtils.isNotBlank(testPlanId)) {
+				String buildid = tlS.getLastBuildForTestPlanId(testPlanId);
+				String testcaseexternalid = jTextField.getText();
 
-			log.info("urlData= " + urlData);
-			log.info("TEST_API_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_URL));
-			log.info("TEST_API_KEY= " + variables.get(TestLinkArgumentsPanel.TEST_API_KEY));
-			log.info("PROJECT_NAME= " + projectName);
-			log.info("PLAN_NAME= " + testPlanName);
-			log.info("testPlanId= " + testPlanId);
-			log.info("buildid= " + buildid);
-			log.info("testcaseexternalid= " + testcaseexternalid);
-			log.info("status= " + status);
+				log.info("urlData= " + urlData);
+				log.info("TEST_API_URL= " + variables.get(TestLinkArgumentsPanel.TEST_API_URL));
+				log.info("TEST_API_KEY= " + variables.get(TestLinkArgumentsPanel.TEST_API_KEY));
+				log.info("PROJECT_NAME= " + projectName);
+				log.info("PLAN_NAME= " + testPlanName);
+				log.info("testPlanId= " + testPlanId);
+				log.info("testProjectId= " + testProjectId);
+				log.info("buildid= " + buildid);
+				log.info("testcaseexternalid= " + testcaseexternalid);
+				log.info("status= " + status);
 
-			String reportTCResult = tlS.reportTCResult(testPlanId, testcaseexternalid, notes.getText(), status,
-					platform.getText());
-			log.info("reportTCResult=" + reportTCResult);
-			log.info("************************************************");
+				String reportTCResult = tlS.reportTCResult(testPlanId,testProjectId, testcaseexternalid, notes.getText(), status, platform.getText());
+				log.info("reportTCResult=" + reportTCResult);
+				log.info("************************************************");
+			}else{
+				String errorMsg = "testPlanId is blank";
+				addError(errorMsg);
+			}
 		}
 
+	}
+
+	private void addError(String errorMsg) {
+		if(errors==null){
+			errors=new JTextField(errorMsg);
+			mainPanel.add(errors);
+		}else{
+			errors.setText(errorMsg);
+			
+		}
 	}
 
 	private void init() {
@@ -92,11 +119,10 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 		setBorder(makeBorder());
 
 		box.add(makeTitlePanel());
-		box.add(createPanel(),BorderLayout.WEST);
-		// box.add(createFieldPanel());
-		// box.add(createTypePanel());
+		mainPanel = createPanel();
+		box.add(mainPanel, BorderLayout.WEST);
 		add(box, BorderLayout.NORTH);
-		// add(createStringPanel(), BorderLayout.CENTER);
+
 	}
 
 	private JPanel createPanel() {

@@ -1,4 +1,5 @@
 package org.apache.jmeter.config.gui;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -7,14 +8,16 @@ import java.util.regex.Pattern;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
 public class TestLinkService {
 	private static final Logger log = LoggingManager.getLoggerForClass();
-	private static final String ARRAY_SEPARATOR = "::";
+	public static final String ARRAY_SEPARATOR = "::";
 
-	private static String REG_ID = "<member><name>id</name><value><string>(.*)</string></value></member";
+	private static String REGEX_ID = "<member><name>id</name><value><string>(.*)</string></value></member";
+	private static String REGEX_PROJECT_ID = "<member><name>testproject_id</name><value><string>(.*)</string></value></member";
 
 	private String url;
 	private String devKey;
@@ -33,7 +36,10 @@ public class TestLinkService {
 		PostMethod method = new PostMethod(url);
 		String reqBody = req.toString();
 		method.setRequestBody(reqBody);
-		result = extractResult(REG_ID, method);
+		result = extractResult(null, method);
+		String testCaseId = processResponse(REGEX_ID, result);
+		String testProjectId = processResponse(REGEX_PROJECT_ID, result);
+		result = testCaseId + "::" + testProjectId;
 		return result;
 	}
 
@@ -47,26 +53,43 @@ public class TestLinkService {
 		return result;
 	}
 
+	public String createTestCaseExecutionType(String testprojectid, String testcaseexternalid) {
+		String result = null;
+		StringBuilder req = createTestCaseExecutionTypeReq(testprojectid, testcaseexternalid);
+		PostMethod method = new PostMethod(url);
+		String reqBody = req.toString();
+		method.setRequestBody(reqBody);
+		result = extractResult(null, method);
+		return result;
+	}
+
 	/**
 	 * This create a new TestCase or is updating if exists.
 	 * 
 	 * @param testplanid
+	 * @param testProjectId
 	 * @param testcaseexternalid
-	 * @param buildid
 	 * @param notes
 	 * @param status
 	 * @param platform
 	 * @return
 	 */
-	public String reportTCResult(String testplanid, String testcaseexternalid,  String notes, String status, String platform) {
+	public String reportTCResult(String testplanid, String testProjectId, String testcaseexternalid, String notes, String status,
+			String platform) {
 		String result = null;
-		String buildid=getLastBuildForTestPlanId(testplanid);
-		log.info("Last Build id="+buildid);
+		String buildid = getLastBuildForTestPlanId(testplanid);
+		log.info("Last Build id=" + buildid);
 		StringBuilder req = reportTCResultRequest(testplanid, testcaseexternalid, buildid, notes, status, platform);
 		PostMethod method = new PostMethod(url);
 		String reqBody = req.toString();
 		method.setRequestBody(reqBody);
 		result = extractResult(null, method);
+		log.info("reportTCResult is:" + result);
+		// String testprojectidString = processResponse(REGEX_ID, result, null);
+		// getTestPlanByName(projectName, testPlanName)
+		// Integer i=Integer.parseInt(testprojectidString);
+		log.info("testprojectid just created/updated:" + testProjectId);
+		log.info("createTestCaseExecutionType result==" + createTestCaseExecutionType(testProjectId, testcaseexternalid));
 		return result;
 	}
 
@@ -76,7 +99,7 @@ public class TestLinkService {
 		PostMethod method = new PostMethod(url);
 		String reqBody = req.toString();
 		method.setRequestBody(reqBody);
-		result = extractResult(REG_ID, method, ARRAY_SEPARATOR);
+		result = extractResult(REGEX_ID, method, ARRAY_SEPARATOR);
 		String[] buildsIds = result.split(ARRAY_SEPARATOR);
 		int theBigestId = 0;
 		for (String buildId : buildsIds) {
@@ -115,7 +138,7 @@ public class TestLinkService {
 	}
 
 	private StringBuilder createGetTestPlanByNameReq(String projectName, String testPlanName) {
-		HashMap<String, String> params = new HashMap<String, String>();
+		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("METHOD_NAME", "tl.getTestPlanByName");
 		params.put("devKey", devKey);
 		params.put("testprojectname", projectName);
@@ -125,7 +148,7 @@ public class TestLinkService {
 	}
 
 	private StringBuilder createBuildReq(String testplanid, String buildname, String testplanname) {
-		HashMap<String, String> params = new HashMap<String, String>();
+		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("METHOD_NAME", "tl.createBuild");
 		params.put("devKey", devKey);
 		params.put("testplanid", testplanid);
@@ -138,7 +161,7 @@ public class TestLinkService {
 
 	private StringBuilder reportTCResultRequest(String testplanid, String testcaseexternalid, String buildid, String notes, String status,
 			String platform) {
-		HashMap<String, String> params = new HashMap<String, String>();
+		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("METHOD_NAME", "tl.reportTCResult");
 		params.put("devKey", devKey);
 		params.put("testplanid", testplanid);// configured
@@ -153,7 +176,7 @@ public class TestLinkService {
 	}
 
 	private StringBuilder getBuildsForTestPlanReq(String testplanid) {
-		HashMap<String, String> params = new HashMap<String, String>();
+		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("METHOD_NAME", "tl.getBuildsForTestPlan");
 		params.put("devKey", devKey);
 		params.put("testplanid", testplanid);// configured
@@ -162,18 +185,37 @@ public class TestLinkService {
 		return req;
 	}
 
-	private StringBuilder createRequest(HashMap<String, String> params) {
+	private StringBuilder createTestCaseExecutionTypeReq(String testprojectid, String testcaseexternalid) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("METHOD_NAME", "tl.setTestCaseExecutionType");
+		params.put("devKey", devKey);
+		params.put("testprojectid", testprojectid);
+		params.put("testcaseexternalid", testcaseexternalid);
+		params.put("version", 1);//
+		params.put("executiontype", 2);
+
+		StringBuilder req = createRequest(params);
+		return req;
+	}
+
+	private StringBuilder createRequest(HashMap<String, Object> params) {
 
 		StringBuilder req = new StringBuilder();
 		req.append("<?xml version=\"1.0\"?>");
 		req.append("<methodCall>");
 		req.append("<methodName>" + params.get("METHOD_NAME") + "</methodName>");
 		req.append("<params>");
-		req.append("	<param><value><struct>");
+		req.append("<param><value><struct>");
 		for (String key : params.keySet()) {
-			req.append(" 		<member><name>" + key + "</name><value><string>" + params.get(key) + "</string></value></member>");
+
+			Object object = params.get(key);
+			if (object instanceof String) {
+				req.append("<member><name>" + key + "</name><value><string>" + object + "</string></value></member>");
+			} else {
+				req.append("<member><name>" + key + "</name><value><int>" + object + "</int></value></member>");
+			}
 		}
-		req.append("	</struct></value></param>");
+		req.append("</struct></value></param>");
 		req.append("</params></methodCall>");
 		return req;
 	}
@@ -187,21 +229,7 @@ public class TestLinkService {
 				String responseBodyAsString = method.getResponseBodyAsString();
 
 				if (regId != null) {
-					Pattern p = Pattern.compile(regId);
-					Matcher matcher = p.matcher(responseBodyAsString);
-					if (separator != null && separator.length > 0 && separator[0] != null) {
-						while (matcher.find()) {
-							result += matcher.group(1);
-							result += separator[0];
-
-						}
-					} else {
-						if (matcher.find()) {
-							result = matcher.group(1);
-						} else {
-							result = responseBodyAsString;
-						}
-					}
+					result = processResponse(regId, responseBodyAsString, separator);
 				} else {
 					result = responseBodyAsString;
 				}
@@ -212,6 +240,27 @@ public class TestLinkService {
 		} catch (IOException e) {
 
 			e.printStackTrace();
+		}
+		return result;
+	}
+
+	private String processResponse(String regId, String responseBodyAsString, String... separator) {
+		String result = "";
+		if (StringUtils.isNotBlank(responseBodyAsString)) {
+			Pattern p = Pattern.compile(regId);
+			Matcher matcher = p.matcher(responseBodyAsString);
+			if (separator != null && separator.length > 0 && separator[0] != null) {
+				while (matcher.find()) {
+					result += matcher.group(1);
+					result += separator[0];
+				}
+			} else {
+				if (matcher.find()) {
+					result = matcher.group(1);
+				} else {
+					result = responseBodyAsString;
+				}
+			}
 		}
 		return result;
 	}
