@@ -14,7 +14,7 @@ public class TestLinkTestProject extends TestLinkArgumentsPanel {
 	private static final String TITLE = "test_link_test_project";
 
 	public static final String PROJECT_NAME = "PROJECT_NAME";
-	public static final String PLAN_NAME = "PLAN_NAME";
+	public static final String PLAN_NAME = "TEST_PLAN_NAME";
 
 	/* Implements JMeterGUIComponent.createTestElement() */
 	@Override
@@ -22,7 +22,7 @@ public class TestLinkTestProject extends TestLinkArgumentsPanel {
 		log.info("createTestElement");
 
 		tableModel.addRow(new Argument(PROJECT_NAME, "projectName"));
-		tableModel.addRow(new Argument(PLAN_NAME, "planName"));
+		tableModel.addRow(new Argument(PLAN_NAME, "testPlanName"));
 
 		Arguments args = new Arguments();
 		modifyTestElement(args);

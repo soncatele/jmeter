@@ -21,12 +21,13 @@ import org.apache.log.Logger;
 public class TestLinkPublishTestCase extends AbstractVisualizer {
 	private static final Logger log = LoggingManager.getLoggerForClass();
 	public static String TEST_ID = "TEST_ID";
-	JTextField jTextField = null;
-	JTextField notes = null;
-	JTextField errors = null;
+	private JTextField jTextField = null;
+	private JTextField notes = null;
+	private JTextField errors = null;
 
-	JTextField platform = null;
+	private JTextField platform = null;
 	JPanel mainPanel = null;
+	private JTextField buildName;
 
 	public TestLinkPublishTestCase() {
 		init();
@@ -49,14 +50,10 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 		String status = null;
 		for (AssertionResult ar : assertionResults) {
 			if (ar.isError() || ar.isFailure()) {
-				log.info("this test has to be published in test link:" + ar.getFailureMessage());
-				log.info("****************************");
-				log.info(ToStringBuilder.reflectionToString(ar));
-				log.info("****************************");
-
+				log.info("Test error or failure:" + ar.getFailureMessage());
 				status = "f";
+				break;
 			} else {
-
 				status = "p";
 				log.info("This one is success:" + ToStringBuilder.reflectionToString(ar));
 			}
@@ -73,12 +70,24 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 				if (arr != null && arr.length == 2) {
 					testPlanId = arr[0];
 					testProjectId = arr[1];
-				}else{
-					addError("testPlanId_testProjectId not OK:"+testPlanId_testProjectId );
+				} else {
+					addError("testPlanId_testProjectId not OK:" + testPlanId_testProjectId);
 				}
 			}
+			String buildname = buildName.getText();
+			String buildid = "";
+			
+			if (StringUtils.isNotBlank(buildname) && StringUtils.isNotBlank(testProjectId)) {
+
+				buildid = tlS.createBuild(testPlanId, buildname, testPlanName);
+
+				
+				log.info("last build id=" + buildid);
+
+			}
 			if (StringUtils.isNotBlank(testPlanId)) {
-				String buildid = tlS.getLastBuildForTestPlanId(testPlanId);
+				
+				
 				String testcaseexternalid = jTextField.getText();
 
 				log.info("urlData= " + urlData);
@@ -88,14 +97,15 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 				log.info("PLAN_NAME= " + testPlanName);
 				log.info("testPlanId= " + testPlanId);
 				log.info("testProjectId= " + testProjectId);
-				log.info("buildid= " + buildid);
+				log.info("buildid - can be error if already exists:= " + buildid);
 				log.info("testcaseexternalid= " + testcaseexternalid);
 				log.info("status= " + status);
 
-				String reportTCResult = tlS.reportTCResult(testPlanId,testProjectId, testcaseexternalid, notes.getText(), status, platform.getText());
+				String reportTCResult = tlS.reportTCResult(testPlanId, testProjectId, testcaseexternalid, notes.getText(), status,
+						platform.getText());
 				log.info("reportTCResult=" + reportTCResult);
 				log.info("************************************************");
-			}else{
+			} else {
 				String errorMsg = "testPlanId is blank";
 				addError(errorMsg);
 			}
@@ -104,12 +114,12 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 	}
 
 	private void addError(String errorMsg) {
-		if(errors==null){
-			errors=new JTextField(errorMsg);
+		if (errors == null) {
+			errors = new JTextField(errorMsg);
 			mainPanel.add(errors);
-		}else{
+		} else {
 			errors.setText(errorMsg);
-			
+
 		}
 	}
 
@@ -127,18 +137,22 @@ public class TestLinkPublishTestCase extends AbstractVisualizer {
 
 	private JPanel createPanel() {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
-		panel.add(new JLabel("Test Id:"));
+		panel.add(new JLabel("Test Id from TestLink:"));
 		jTextField = new JTextField("test_id");
 		panel.add(jTextField);
 
-		panel.add(new JLabel("Notes:"));
+		panel.add(new JLabel("Results Notes:"));
 		notes = new JTextField("notes");
 		panel.add(notes);
 
 		// platform
-		panel.add(new JLabel("Platform:"));
+		panel.add(new JLabel("Platform from TestLink:"));
 		platform = new JTextField("platform");
 		panel.add(platform);
+
+		panel.add(new JLabel("Build Name:"));
+		buildName = new JTextField();
+		panel.add(buildName);
 
 		return panel;
 	}

@@ -30,7 +30,7 @@ public class TestLinkService {
 	}
 
 	public String getTestPlanByName(String projectName, String testPlanName) {
-
+		log.info("getTestPlanByName:projectName=>" + projectName + "  testPlanName=>" + testPlanName);
 		String result = null;
 		StringBuilder req = createGetTestPlanByNameReq(projectName, testPlanName);
 		PostMethod method = new PostMethod(url);
@@ -40,16 +40,18 @@ public class TestLinkService {
 		String testCaseId = processResponse(REGEX_ID, result);
 		String testProjectId = processResponse(REGEX_PROJECT_ID, result);
 		result = testCaseId + "::" + testProjectId;
+		log.info("getTestPlanByName:result=>"+result);
 		return result;
 	}
 
 	public String createBuild(String testplanid, String buildname, String testplanname) {
+		log.info("createBuild:testplanid" + testplanid + " buildname=>" + buildname + " testplanname=>" + testplanname);
 		String result = null;
 		StringBuilder req = createBuildReq(testplanid, buildname, testplanname);
 		PostMethod method = new PostMethod(url);
 		String reqBody = req.toString();
 		method.setRequestBody(reqBody);
-		result = extractResult(null, method);
+		result = extractResult(REGEX_ID, method);
 		return result;
 	}
 
@@ -78,7 +80,7 @@ public class TestLinkService {
 			String platform) {
 		String result = null;
 		String buildid = getLastBuildForTestPlanId(testplanid);
-		log.info("Last Build id=" + buildid);
+		log.info("Last Build id should be ok=" + buildid);
 		StringBuilder req = reportTCResultRequest(testplanid, testcaseexternalid, buildid, notes, status, platform);
 		PostMethod method = new PostMethod(url);
 		String reqBody = req.toString();
@@ -124,7 +126,7 @@ public class TestLinkService {
 		String url = "http://192.168.1.120/testlink/lib/api/xmlrpc/v1/xmlrpc.php";
 		TestLinkService tl = new TestLinkService(url, "fb1251872917d6a0f77622d8f579b2ad");
 		// System.out.println(tl.getTestPlanByName(projectName, testPlanName));
-		// System.out.println("createdBuild:" + tl.createBuild("16", "OVidiu BuildName", "testplanname"));
+		System.out.println("createdBuild:" + tl.createBuild("16", "OVidiu BuildName2", "testplanname"));
 		System.out.println(tl.getLastBuildForTestPlanId("16"));
 
 		// String testplanid="16";
